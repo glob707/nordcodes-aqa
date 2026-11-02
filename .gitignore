@@ -1,0 +1,8 @@
+target/
+app/*.jar
+app-dist/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+.allure/
