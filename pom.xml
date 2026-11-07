@@ -25,7 +25,22 @@
         <compiler.version>3.14.1</compiler.version>
         <allure-maven.version>2.17.0</allure-maven.version>
         <allure.commandline.version>2.34.1</allure.commandline.version>
+
+        <!-- В основной прогон тесты с тегом defect не входят: они падают намеренно,
+             пока дефекты не исправлены. Отдельный запуск: mvn test -Pdefects -->
+        <aqa.groups.excluded>defect</aqa.groups.excluded>
+        <aqa.groups.included></aqa.groups.included>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>defects</id>
+            <properties>
+                <aqa.groups.excluded></aqa.groups.excluded>
+                <aqa.groups.included>defect</aqa.groups.included>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -106,6 +121,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.version}</version>
                 <configuration>
+                    <groups>${aqa.groups.included}</groups>
+                    <excludedGroups>${aqa.groups.excluded}</excludedGroups>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
